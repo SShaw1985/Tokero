@@ -1,5 +1,11 @@
 namespace Tokero.Models
 {
+    public enum InvestmentFrequency
+    {
+        Weekly,
+        Monthly
+    }
+
     public class DcaRecord
     {
         public DateTime Date { get; set; }
@@ -33,7 +39,8 @@ namespace Tokero.Models
     {
         public List<CoinAllocation> Allocations { get; set; } = new();
         public decimal TotalMonthlyInvestment { get; set; }
-        public int InvestmentFrequencyDays { get; set; } = 30;
+        public InvestmentFrequency InvestmentFrequency { get; set; } = InvestmentFrequency.Monthly;
+        public int InvestmentDayOfPeriod { get; set; } = 15; // Day of month or day of week
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }
@@ -46,5 +53,13 @@ namespace Tokero.Models
         public decimal Roi { get; set; }
         public decimal RoiPercentage { get; set; }
         public int Rank { get; set; }
+        public bool IsInUserPortfolio { get; set; }
+    }
+
+    public class CoinAmount
+    {
+        public string Symbol { get; set; }
+        public double Amount { get; set; }
+        public DateTime StartDate{ get; set; }
     }
 }

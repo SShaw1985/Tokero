@@ -11,6 +11,9 @@
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:RoiToColorConverter x:Key="RoiToColorConverter" />
     <converters:StringContainsConverter x:Key="StringContainsConverter" />
+    <converters:RankToColorConverter x:Key="RankToColorConverter" />
+    <converters:PortfolioStatusToColorConverter x:Key="PortfolioStatusToColorConverter" />
+    <converters:RankToPerformanceTextConverter x:Key="RankToPerformanceTextConverter" />
 
     <Style TargetType="ContentPage">
         <Setter Property="BackgroundColor" Value="White" />

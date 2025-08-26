@@ -81,28 +81,49 @@
                             <Label Text="{Binding SelectedCoins.Count, StringFormat='{0} coin(s) selected'}"
                                 Style="{StaticResource Caption}" TextColor="{StaticResource UNeutral600}" />
                         </VerticalStackLayout>
-                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
-                            <Label Text="Invest on day" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                            <Label Text="Investment Frequency" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+                            <Picker Title="" ItemsSource="{Binding InvestmentFrequencies}" SelectedItem="{Binding InvestmentFrequency}" />
+                        </VerticalStackLayout>
 
+
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                            
+                            <Label Text="{Binding InvestmentFrequency, Converter={StaticResource InvestmentFrequencyToLabelConverter}}" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
                             <Picker Title="" ItemsSource="{Binding Days}"  SelectedItem="{Binding SelectedDay}" />
                         </VerticalStackLayout>
+                        <CollectionView  IsVisible="{Binding ShowCoinAmounts}"  Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding CountAmounts}"  HorizontalOptions="FillAndExpand">
+                            <CollectionView.HeaderTemplate>
+                                <DataTemplate>
+                                    <Label Text="Amount per period (EUR)" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+                                </DataTemplate>
+                            </CollectionView.HeaderTemplate>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout  Spacing="4" Orientation="Horizontal">
+                                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                                            <Label Text="{Binding Symbol}" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+                                            <Entry HorizontalOptions="FillAndExpand" MinimumWidthRequest="125" Placeholder="200" Keyboard="Numeric" Text="{Binding Amount}" />
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout  HorizontalOptions="FillAndExpand">
+                                            <Label Text="Start date" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+                                            <DatePicker Date="{Binding StartDate}" HorizontalOptions="FillAndExpand" />
+                                        </VerticalStackLayout>
+                                    </StackLayout>
+                                    
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
 
-                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
-                            <Label Text="Start date" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
 
-                            <DatePicker Date="{Binding StartDate}" />
-                        </VerticalStackLayout>
-
-                        <VerticalStackLayout Grid.Row="2" Grid.ColumnSpan="2" Spacing="4">
-                            <Label Text="Monthly amount (EUR)" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
-                            <Entry HorizontalOptions="FillAndExpand" MinimumWidthRequest="125" Placeholder="200" Keyboard="Numeric" Text="{Binding MonthlyAmount}" />
-                        </VerticalStackLayout>
                         <Button Grid.Row="3" Grid.ColumnSpan="2" Text="Calculate" Command="{Binding CalculateCommand}" />
                     </Grid>
                 </Frame>
 
                 <VerticalStackLayout Spacing="12" IsVisible="{Binding Records.Count, Converter={StaticResource CountToVisibilityConverter}}">
                     <Label Text="DCA Results" Style="{StaticResource SubHeadline}" TextColor="White" />
+                    <Label Text="{Binding InvestmentFrequencyDescription, StringFormat='{0} Investment Strategy'}" Style="{StaticResource Caption}" TextColor="White" HorizontalOptions="Center" />
 
                     <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
                         <Frame Grid.Column="0">
@@ -138,15 +159,51 @@
 
                         <Frame>
                             <VerticalStackLayout Spacing="8">
-                                <Label Text="Monthly ROI Performance" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                <Label Text="Period ROI Performance" Style="{StaticResource Caption}" FontAttributes="Bold" />
                                 <microcharts:ChartView Chart="{Binding RoiChart}" HeightRequest="200" />
                             </VerticalStackLayout>
                         </Frame>
+
+                        
                     </VerticalStackLayout>
 
                     <Frame HorizontalOptions="FillAndExpand">
                         <VerticalStackLayout Spacing="8" HorizontalOptions="FillAndExpand">
-                            <Label Text="Monthly Investment Details" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                            <Label Text="Top 10 Coins Performance Comparison" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                            
+                            <CollectionView ItemsSource="{Binding ComparativePerformances}" HorizontalOptions="FillAndExpand">
+                                <CollectionView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="Auto,*,*,*,*" ColumnSpacing="8" Padding="0,4">
+                                            <Label Grid.Column="0" Text="Rank" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="1" Text="Coin" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="2" Text="Invested" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="3" Text="Value Today" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="4" Text="ROI" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                           </Grid>
+                                    </DataTemplate>
+                                </CollectionView.HeaderTemplate>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="Auto,*,*,*,*" ColumnSpacing="8" Padding="0,4">
+                                            <Frame Grid.Column="0" Padding="4,2" BackgroundColor="{Binding Rank, Converter={StaticResource RankToColorConverter}}" CornerRadius="4" HorizontalOptions="Center">
+                                                <Label Text="{Binding Rank}" Style="{StaticResource Caption}" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" />
+                                            </Frame>
+                                            <Label Grid.Column="1" Text="{Binding Symbol}" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="2" Text="{Binding TotalInvested, StringFormat='€{0:N0}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="3" Text="{Binding CurrentValue, StringFormat='€{0:N0}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="4" Text="{Binding RoiPercentage, StringFormat='{0:F1}%'}" Style="{StaticResource Caption}" 
+                                                   TextColor="{Binding Roi, Converter={StaticResource RoiToColorConverter}}" />
+                                              </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame HorizontalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="8" HorizontalOptions="FillAndExpand">
+                            <Label Text="Investment Details" Style="{StaticResource Caption}" FontAttributes="Bold" />
                             <CollectionView Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding Records}"  HorizontalOptions="FillAndExpand">
                                 <CollectionView.HeaderTemplate>
                                     <DataTemplate>
@@ -163,7 +220,7 @@
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="8" Padding="0,4">
-                                            <Label Grid.Column="0" Text="{Binding Date, StringFormat='{0:MMM yyyy}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="0" Text="{Binding Date, StringFormat='{0:MMM dd yyyy}'}" Style="{StaticResource Caption}" />
                                             <Label Grid.Column="1" Text="{Binding CoinSymbol}" Style="{StaticResource Caption}" />
 
                                             <Label Grid.Column="2" Text="{Binding InvestedAmount, StringFormat='€{0:N2}'}" Style="{StaticResource Caption}" />

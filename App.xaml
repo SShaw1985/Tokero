@@ -17,6 +17,7 @@
             <converters:RoiToColorConverter x:Key="RoiToColorConverter" />
             <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:InvestmentFrequencyToLabelConverter x:Key="InvestmentFrequencyToLabelConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
