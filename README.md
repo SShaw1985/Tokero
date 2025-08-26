@@ -2,6 +2,7 @@
 
 A cross-platform mobile application built with .NET MAUI that helps users configure and analyze Dollar Cost Averaging strategies for cryptocurrency investments.
 
+
 ## Features
 
 ### Authentication System
@@ -110,17 +111,12 @@ The app integrates with CoinMarketCap API for cryptocurrency data:
 - **Features**: Current prices, cryptocurrency listings
 - **Caching**: Implements caching layer for improved performance and reduced API calls
 
-## DCA Strategy Benefits
+## Screenshots
+![1-home](https://github.com/user-attachments/assets/f8d84c89-98c1-4f81-938e-4d9509adcdbb)
+![2 -search](https://github.com/user-attachments/assets/eb6e93e1-d5f2-4ee7-95b9-56dceeb703e9)
+![3 - coins](https://github.com/user-attachments/assets/7cb90255-7350-4127-b2ba-8ea8ece4affc)
+![4 - filters](https://github.com/user-attachments/assets/ff878569-08ea-4104-a824-c3595c59c28e)
+![5 - Results](https://github.com/user-attachments/assets/063a3924-a1ab-4823-8029-62581e0e0e3d)
+![6 - Results 2](https://github.com/user-attachments/assets/e45eeab6-cc03-4808-a33d-803394bc19e6)
+![7 - Results 3](https://github.com/user-attachments/assets/6ea09aed-3a8c-4a49-8f27-87643e98ac57)
 
-Dollar Cost Averaging (DCA) is an investment strategy that involves:
-- **Regular Investments**: Investing a fixed amount at regular intervals
-- **Market Volatility**: Reduces the impact of market timing and volatility
-- **Long-term Growth**: Ideal for long-term cryptocurrency investment strategies
-- **Risk Management**: Spreads investment risk over time
-
-## Performance Features
-
-- **Efficient Data Loading**: Asynchronous operations with loading indicators
-- **Smart Caching**: Reduces API calls and improves app responsiveness
-- **Optimized UI**: Smooth scrolling and responsive interface
-- **Memory Management**: Efficient handling of large datasets
