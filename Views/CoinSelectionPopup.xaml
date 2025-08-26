@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="Tokero.Views.CoinSelectionPopup"
+               Color="Transparent"
+               CanBeDismissedByTappingOutsideOfPopup="False"
+               Size="350,600">
+
+    <Grid BackgroundColor="Transparent">
+        <BoxView BackgroundColor="Transparent" />
+
+        <Frame BackgroundColor="White"
+               CornerRadius="15"
+               Padding="20"
+               Margin="20"
+               VerticalOptions="Center"
+               HorizontalOptions="Center">
+
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="Select Cryptocurrencies"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+
+                    <Button Grid.Column="1"
+                            Text="✕"
+                            FontSize="20"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource Primary}"
+                            Command="{Binding CloseCommand}"
+                            WidthRequest="40"
+                            HeightRequest="40" />
+                </Grid>
+
+                <Frame Grid.Row="1"
+                       BackgroundColor="#F5F5F5"
+                       CornerRadius="10"
+                       Padding="15,10"
+                       Margin="0,15,0,15">
+                    <Entry Placeholder="Search cryptocurrencies..."
+                           Text="{Binding SearchText}"
+                           BackgroundColor="Transparent" />
+                </Frame>
+
+                <CollectionView Grid.Row="2"
+                               ItemsSource="{Binding FilteredCoins}"
+                               Margin="0,0,0,15">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto,*"
+                                  Padding="10,8"
+                                  Margin="0,2">
+
+                                <CheckBox Grid.Column="0"
+                                           IsChecked="{Binding IsSelected}"
+                                           VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       Margin="15,0,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding SelectedCoins.Count, StringFormat='{0} selected'}"
+                           FontSize="14"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+
+                    <Button Grid.Column="1"
+                            Text="Done"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            Command="{Binding DoneCommand}"
+                            CornerRadius="20"
+                            Padding="20,10" />
+                </Grid>
+            </Grid>
+        </Frame>
+    </Grid>
+</toolkit:Popup>

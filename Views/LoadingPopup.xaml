@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="Tokero.Views.LoadingPopup"
+               Color="Transparent"
+               CanBeDismissedByTappingOutsideOfPopup="False"
+               Size="200,150">
+
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <Frame CornerRadius="25" HeightRequest="100" WidthRequest="100">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}" WidthRequest="25" HeightRequest="25" />
+                <Label x:Name="LoadingLabel" FontSize="14" TextColor="{StaticResource Primary}"  HorizontalOptions="Center" />
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</toolkit:Popup>

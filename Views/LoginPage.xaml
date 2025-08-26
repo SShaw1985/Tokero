@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Tokero.Views.LoginPage"
+             BackgroundColor="{StaticResource Primary}"
+             Title="Login">
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto">
+            <Grid Background="{StaticResource TokeroHeaderGradient}" Padding="16,32" Margin="0,0,0,150">
+                <VerticalStackLayout Spacing="6">
+                    <Image Source="logo.png" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Frame Grid.Row="1" Margin="16,-24,16,16" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="12">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Email Address" Style="{StaticResource Caption}"  FontSize="Medium"  FontAttributes="Bold" />
+                        <Entry Placeholder="name@company.com" Keyboard="Email" Text="{Binding Username}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Password" Style="{StaticResource Caption}"   FontSize="Medium"  FontAttributes="Bold" />
+                        <Entry Placeholder="••••••••" IsPassword="True" Text="{Binding Password}" />
+                    </VerticalStackLayout>
+
+                    <Button Text="Sign in" Command="{Binding LoginCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}" />
+                    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

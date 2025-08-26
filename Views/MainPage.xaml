@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Tokero.Views.MainPage" Background="{StaticResource Primary}"
+             Title="">
+    <ScrollView>
+        <VerticalStackLayout Spacing="16">
+            <Grid Background="{StaticResource TokeroHeaderGradient}" Padding="16,24">
+                <VerticalStackLayout Spacing="6">
+                    <Image Source="logo.png" />
+                    <Label Text="Configure your DCA strategy" TextColor="White" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <VerticalStackLayout Padding="16" Spacing="16">
+
+                <Frame>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Spacing="4">
+                            <Label Text="Cryptocurrencies" Style="{StaticResource Caption}" FontSize="Medium"  FontAttributes="Bold" />
+
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                                <Frame Grid.Column="0" Padding="12" BackgroundColor="Transparent" BorderColor="{StaticResource PrimaryDark}">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <ScrollView Grid.Column="0" HeightRequest="40" Orientation="Horizontal">
+                                            <HorizontalStackLayout Spacing="4">
+                                                <Label Text="Select cryptocurrencies..."
+                                                       TextColor="{StaticResource UNeutral600}"
+                                                       Style="{StaticResource Caption}"
+                                                       IsVisible="{Binding SelectedCoins.Count, Converter={StaticResource CountToVisibilityConverter}, ConverterParameter=0}" />
+
+                                                <CollectionView ItemsSource="{Binding SelectedCoins}"
+                                                              FlowDirection="LeftToRight"
+                                                              ItemsLayout="HorizontalList"
+                                                              IsVisible="{Binding SelectedCoins.Count, Converter={StaticResource CountToVisibilityConverter}}">
+
+                                                    <CollectionView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Frame Margin="2"
+                                                                   Padding="6,2"
+                                                                   BackgroundColor="{StaticResource Primary}"
+                                                                   CornerRadius="12">
+                                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                                                    <Label Grid.Column="0"
+                                                                           Text="{Binding .}"
+                                                                           TextColor="White"
+                                                                           FontSize="10"
+                                                                           VerticalOptions="Center" />
+                                                                    <Button Grid.Column="1"
+                                                                            Text="✕"
+                                                                            FontSize="8"
+                                                                            Padding="2"
+                                                                            BackgroundColor="Transparent"
+                                                                            TextColor="White"
+                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleCoinSelectionCommand}"
+                                                                            CommandParameter="{Binding .}" />
+                                                                </Grid>
+                                                            </Frame>
+                                                        </DataTemplate>
+                                                    </CollectionView.ItemTemplate>
+                                                </CollectionView>
+                                            </HorizontalStackLayout>
+                                        </ScrollView>
+                                        <Button Grid.Column="1"
+                                                Text="▼"
+                                                FontSize="12"
+                                                Padding="8,4"
+                                                BackgroundColor="Transparent"
+                                                TextColor="{StaticResource Primary}"
+                                                Command="{Binding ShowCoinSelectionCommand}" />
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                            <ActivityIndicator IsRunning="{Binding IsLoadingCryptocurrencies}" IsVisible="{Binding IsLoadingCryptocurrencies}"
+                     Color="{StaticResource TokeroPurple}" HorizontalOptions="Start" />
+                            <Label Text="{Binding SelectedCoins.Count, StringFormat='{0} coin(s) selected'}"
+                                Style="{StaticResource Caption}" TextColor="{StaticResource UNeutral600}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                            <Label Text="Invest on day" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+
+                            <Picker Title="" ItemsSource="{Binding Days}"  SelectedItem="{Binding SelectedDay}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                            <Label Text="Start date" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+
+                            <DatePicker Date="{Binding StartDate}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="2" Grid.ColumnSpan="2" Spacing="4">
+                            <Label Text="Monthly amount (EUR)" Style="{StaticResource Caption}" FontSize="Medium" FontAttributes="Bold" />
+                            <Entry HorizontalOptions="FillAndExpand" MinimumWidthRequest="125" Placeholder="200" Keyboard="Numeric" Text="{Binding MonthlyAmount}" />
+                        </VerticalStackLayout>
+                        <Button Grid.Row="3" Grid.ColumnSpan="2" Text="Calculate" Command="{Binding CalculateCommand}" />
+                    </Grid>
+                </Frame>
+
+                <VerticalStackLayout Spacing="12" IsVisible="{Binding Records.Count, Converter={StaticResource CountToVisibilityConverter}}">
+                    <Label Text="DCA Results" Style="{StaticResource SubHeadline}" TextColor="White" />
+
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <Frame Grid.Column="0">
+                            <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                                <Label Text="Total Invested" Style="{StaticResource Caption}" HorizontalOptions="Center" />
+                                <Label Text="{Binding TotalInvested, StringFormat='€{0:N2}'}" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame Grid.Column="1">
+                            <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                                <Label Text="Portfolio Value" Style="{StaticResource Caption}" HorizontalOptions="Center" />
+                                <Label Text="{Binding PortfolioValueToday, StringFormat='€{0:N2}'}" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame Grid.Column="2">
+                            <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                                <Label Text="Overall ROI" Style="{StaticResource Caption}" HorizontalOptions="Center" />
+                                <Label Text="{Binding OverallRoi, StringFormat='{0:P2}'}" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center"
+                                   TextColor="{Binding OverallRoi, Converter={StaticResource RoiToColorConverter}}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="16">
+                        <Frame>
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Portfolio Value Over Time" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                <microcharts:ChartView Chart="{Binding PortfolioValueChart}" HeightRequest="200" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <Frame>
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Monthly ROI Performance" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                <microcharts:ChartView Chart="{Binding RoiChart}" HeightRequest="200" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <Frame HorizontalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="8" HorizontalOptions="FillAndExpand">
+                            <Label Text="Monthly Investment Details" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                            <CollectionView Grid.Row="1" Grid.ColumnSpan="5" ItemsSource="{Binding Records}"  HorizontalOptions="FillAndExpand">
+                                <CollectionView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="8" Padding="0,4">
+                                            <Label Grid.Column="0" Text="Date" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="1" Text="Coin" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="2" Text="Invested" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="3" Text="Coin Amount" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="4" Text="Value Today" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                            <Label Grid.Column="5" Text="ROI" Style="{StaticResource Caption}" FontAttributes="Bold" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.HeaderTemplate>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="8" Padding="0,4">
+                                            <Label Grid.Column="0" Text="{Binding Date, StringFormat='{0:MMM yyyy}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="1" Text="{Binding CoinSymbol}" Style="{StaticResource Caption}" />
+
+                                            <Label Grid.Column="2" Text="{Binding InvestedAmount, StringFormat='€{0:N2}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="3" Text="{Binding CoinAmount, StringFormat='{0:F6}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="4" Text="{Binding ValueToday, StringFormat='€{0:N2}'}" Style="{StaticResource Caption}" />
+                                            <Label Grid.Column="5" Text="{Binding Roi, StringFormat='{0:P2}'}" Style="{StaticResource Caption}"
+                                                       TextColor="{Binding Roi, Converter={StaticResource RoiToColorConverter}}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
